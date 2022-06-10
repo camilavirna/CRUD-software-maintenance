@@ -1,0 +1,19 @@
+body {
+
+	background-color: #37544f ;
+}
+
+.info-divcla p {
+     
+
+    font-size: 18px;
+    text-align: center;
+    font-family: arial;
+	color: #fff;
+	margin-top: 25%;
+	}
+
+a{
+
+	text-decoration: none;
+}
