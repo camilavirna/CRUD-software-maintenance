@@ -1,6 +1,6 @@
 #### primeiro clone o repositorio
 
-    git clone https://github.com/JonasCaetanoSz/pimeiro-CRUD.git
+    git clone https://github.com/JonasCaetanoSz/primeiro-CRUD.git
     
 #### agora e hora de instalar as bibliotecas que vão ser usadas
 
