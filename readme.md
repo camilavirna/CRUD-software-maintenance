@@ -1,5 +1,6 @@
+#### primeiro clone o repositorio
 
-    git clone
+    git clone https://github.com/JonasCaetanoSz/pimeiro-CRUD.git
     
 #### agora e hora de instalar as bibliotecas que vão ser usadas
 
@@ -11,7 +12,7 @@
     
 ## 📚 Utilizando 
 
-após iniciar o server.py, um servidor local vai se iniciado em <a href="http://127.0.0.1:5000/"> localhost </a>. todas as operações do CRUD podem ser usadas por lá, as funções disponiveis são :
+após iniciar o server.py, um servidor local vai se iniciado em <a href="http://127.0.0.1:5000/"  target="_blank"> localhost </a>. todas as operações do CRUD podem ser usadas por lá, as funções disponiveis são :
 
 - criar conta
 - fazer login
@@ -27,6 +28,6 @@ após iniciar o server.py, um servidor local vai se iniciado em <a href="http://
 
 ## 📝 Licença
 
-Este software está distribuido sobre a licença <a href='https://github.com/JonasCaetanoSz/Bot-plataforma-dizu/blob/main/LICENSE' target="_blank" > MIT </a>
+Este software está distribuido sobre a licença <a href='https://github.com/JonasCaetanoSz/pimeiro-CRUD/blob/master/license.md' target="_blank" > MIT </a>
 
 ### :anchor: Versão 1.0.0
