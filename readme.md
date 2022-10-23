@@ -4,7 +4,7 @@
     
 #### agora e hora de instalar as bibliotecas que vão ser usadas
 
-    cd primeiro-crud && pip -r install requirements.txt
+    cd primeiro-crud && pip install -r requirements.txt
    
 ## 🚀 iniciando 
 
