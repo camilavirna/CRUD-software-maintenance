@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "crud-software-maintenance"
+version = "0.1.0"
+description = ""
+authors = ["Marco Antonio Rodrigues Gomes de Souza <94053824+Marco-Antonio-Rodrigues@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+prospector = "^1.10.3"
+black = "^23.10.1"
+isort = "^5.12.0"
+sqlalchemy = "^2.0.23"
+flask = "^3.0.0"
+flask-sqlalchemy = "^3.1.1"
+load-dotenv = "^0.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
