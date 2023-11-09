@@ -3,12 +3,13 @@
     git clone https://github.com/JonasCaetanoSz/primeiro-CRUD.git
     
 #### agora e hora de instalar as bibliotecas que vão ser usadas
-
-    cd primeiro-crud && pip install -r requirements.txt
+    pip install poetry
+    poetry init -n
+    poetry install
    
 ## 🚀 iniciando 
 
-    python server.py
+    python run.py
     
 ## 📚 Utilizando 
 
@@ -19,7 +20,6 @@ após iniciar o server.py, um servidor local vai se iniciado em <a href="http://
 - fazer logout
 - trocar senha
 - apagar conta
-- gerenciamento de cache (sessionID)
 
 ## :ok_man: Bugs registrados
 
