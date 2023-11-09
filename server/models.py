@@ -2,7 +2,7 @@ from . import db
 
 
 class User(db.Model):
-    __tablename__ = "user"
+    __tablename__ = "USER"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
