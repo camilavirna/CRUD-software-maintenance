@@ -1,33 +1,57 @@
 import os
 
+import requests
 from flask import Flask, abort, make_response, redirect, render_template, request
 
-from app.db import *
 
-
-class Server:
-    def __init__(self):
+class App:
+    def __init__(self, url_base):
         self.app = Flask(__name__, static_url_path="/")
         self.app.template_folder = "templates/"
         self.app.static_folder = "templates/"
+        self.url_base = url_base
+
+    def loginverify(self, email, senha):
+        response = requests.get(self.url_base + f"user/email={email}")
+        if response.status_code != 200:
+            return "não cadastrado", None
+        else:
+            response = response.json()
+            response = response["user"]
+            print(response["id"])
+            if response["password"] == senha:
+                return "sucesso", response["id"]
+            return "incorreta", None
+
+    def register(self, nome, email, password, telefone=0):
+        response = requests.get(self.url_base + f"user/email={email}")
+        if response.status_code == 404:
+            body = {
+                "email": email,
+                "nome": nome,
+                "password": password,
+                "telefone": telefone,
+            }
+            requests.post(self.url_base + "user", json=body)
+            return "sucesso"
+        else:
+            return "existe"
 
     def start(self):
-        @self.app.route("/dashboard")
-        def dashboard():
+        @self.app.route("/dashboard/<id>", methods=["GET"])
+        def dashboard(id):
             try:
-                sessionID = request.cookies.get("sessionID")
-                dados = cookies.verify(sessionID)
-
-                if dados == None:
+                response = requests.get(self.url_base + f"user/id={id}")
+                if response.status_code != 200:
                     response = make_response(redirect("/login?erro=4"))
-                    response.set_cookie("sessionID", "", expires=0)
                     return response
-
                 else:
-                    return render_template("dashboard.html", nome=dados[0][2])
+                    response = response.json()
+                    response = response["user"]
+                    return render_template("dashboard.html", nome=response["nome"])
 
-            except Exception as erro_na_validacao_do_cookie:
-                print(erro_na_validacao_do_cookie)
+            except Exception as e:
+                print(e)
 
                 return abort(400)
 
@@ -50,15 +74,13 @@ class Server:
             else:
                 return redirect("/dashboard")
 
-        @self.app.route("/login/validate")
+        @self.app.route("/login/validate/", methods=["GET"])
         def validatelogin():
-            user = request.args["email"].lower()
+            email = request.args["email"].lower()
             passw = request.args["pswd"]
-            mensagem_de_validacao, cookie = loginverify(user, passw)
-
+            mensagem_de_validacao, id_session = self.loginverify(email, passw)
             if mensagem_de_validacao == "sucesso":
-                response = make_response(redirect("/dashboard"))
-                response.set_cookie("sessionID", cookie)
+                response = make_response(redirect(f"/dashboard/{id_session}"))
                 return response
 
             elif mensagem_de_validacao == "não cadastrado":
@@ -73,7 +95,7 @@ class Server:
             email = request.args["email"].lower()
             passw = request.args["pswd"]
 
-            mensagem_de_validacao = register(user, email, passw)
+            mensagem_de_validacao = self.register(user, email, passw)
 
             if mensagem_de_validacao == "sucesso":
                 return redirect("/login?erro=3")
@@ -89,7 +111,7 @@ class Server:
                 return redirect("/login?erro=4")
 
             else:
-                deleted = cookies.delete(sessionID)
+                deleted = True
 
                 if deleted:
                     response = make_response(redirect("/login"))

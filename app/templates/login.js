@@ -19,13 +19,13 @@ document.querySelector('.erro').textContent = erromsg
 
 else if (erro == '2'){
 
-	erromsg = 'email já esta cadastado, se esqueceu a senha entre em contato.'
+	erromsg = 'email já esta cadastrado, se esqueceu a senha entre em contato.'
 	document.querySelector('.erro').textContent = erromsg
 }
 
 else if (erro == '3'){
 
-	erromsg = 'usuario cadastado com sucesso, faça login novamente!'
+	erromsg = 'usuario cadastrado com sucesso, faça login novamente!'
 	document.querySelector('.erro').textContent = erromsg
 	document.querySelector('.erro').style.color = 'green'
 

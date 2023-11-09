@@ -1,6 +1,10 @@
-# from server.routes import server
-# server.run()
-from app.server import Server
+import threading
 
-server = Server()
+from app.routes import App
+from server.routes import server
+
+thread = threading.Thread(target=server.run)
+thread.start()
+
+server = App("http://127.0.0.1:5000/")
 server.start()

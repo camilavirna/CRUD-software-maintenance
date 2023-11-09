@@ -21,9 +21,18 @@ def get_users():
     return generate_response(200, "user", users_json, "ok")
 
 
-@server.route("/user/<id>", methods=["GET"])
-def get_user(id):
+@server.route("/user/id=<id>", methods=["GET"])
+def get_user_id(id):
     user = User.query.get(id)  # Consulta o usuário da tabela
+    if user:
+        logging.info("GET: %s", user)
+        return generate_response(200, "user", user.serialize(), "ok")
+    return generate_response(404, "user", {}, "user not found")
+
+
+@server.route("/user/email=<email>", methods=["GET"])
+def get_user_email(email):
+    user = User.query.filter_by(email=email).first()
     if user:
         logging.info("GET: %s", user)
         return generate_response(200, "user", user.serialize(), "ok")
