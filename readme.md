@@ -9,7 +9,7 @@
    
 ## 🚀 iniciando 
 
-    python run.py
+    poetry run python run.py
     
 ## 📚 Utilizando 
 
