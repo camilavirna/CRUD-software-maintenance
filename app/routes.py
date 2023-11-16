@@ -8,7 +8,7 @@ class App:
     def __init__(self, url_base):
         self.app = Flask(__name__, static_url_path="/")
         self.app.template_folder = "templates/"
-        self.app.static_folder = "templates/"
+        self.app.static_folder = "static/"
         self.url_base = url_base
 
     def loginverify(self, email, senha):
@@ -36,7 +36,7 @@ class App:
             return "sucesso"
         else:
             return "existe"
-
+            
     def start(self):
         @self.app.route("/dashboard/<id>", methods=["GET"])
         def dashboard(id):
@@ -47,32 +47,21 @@ class App:
                     return response
                 else:
                     response = response.json()
-                    response = response["user"]
-                    return render_template("dashboard.html", nome=response["nome"])
+                    user = response["user"]
+                    return render_template("dashboard.html",user=user)
 
             except Exception as e:
                 print(e)
 
                 return abort(400)
 
-        @self.app.route("/")
+        @self.app.route("/",methods=["GET","POST"])
         def redirectloginpage():
             return redirect("/login")
 
         @self.app.route("/login")
         def login():
-            sessionID = request.cookies.get("sessionID")
-
-            if sessionID == "None":
-                response = make_response(redirect("/login?erro=4"))
-                response.set_cookie("sessionID", "", expires=0)
-                return response
-
-            elif sessionID == None:
-                return render_template("login.html")
-
-            else:
-                return redirect("/dashboard")
+            return render_template("login.html")
 
         @self.app.route("/login/validate/", methods=["GET"])
         def validatelogin():
@@ -105,22 +94,20 @@ class App:
 
         @self.app.route("/logout")
         def logout():
-            sessionID = request.cookies.get("sessionID")
-
-            if sessionID == None:
-                return redirect("/login?erro=4")
-
-            else:
-                deleted = True
-
-                if deleted:
-                    response = make_response(redirect("/login"))
-                    response.set_cookie("sessionID", "", expires=0)
-                    return response
-
-                else:
-                    return redirect("/login?erro=4")
-
+            return make_response(redirect("/login"))        
+        
+        @self.app.route("/update",methods=["GET","POST"])
+        def update():
+            body = {
+                "email": request.form.get('email'),
+                "password": request.form.get('password'),
+                "nome": request.form.get('nome'),
+                "telefone": request.form.get('telefone'),
+                "id":request.form.get('id'),
+            }
+            requests.put(self.url_base + f"user/{body['id']}", json=body)
+            return redirect(f"/dashboard/{body['id']}")
+        
         self.app.run(
-            debug=False, port=int(os.environ.get("PORT", 5000)), host="0.0.0.0"
+            debug=True, port=int(os.environ.get("PORT", 5000)), host="0.0.0.0"
         )
