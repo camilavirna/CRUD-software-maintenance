@@ -1,6 +1,6 @@
 #### primeiro clone o repositorio
 
-    git clone https://github.com/JonasCaetanoSz/primeiro-CRUD.git
+    git clone https://github.com/Marco-Antonio-Rodrigues/CRUD-software-maintenance
     
 #### agora e hora de instalar as bibliotecas que vão ser usadas
     pip install poetry
