@@ -10,8 +10,8 @@
 <body>
 	
 	<main>
-		<div class="info-divcla">
-			<p>olá {{user['nome']}}, bem vindo de volta.</br>este é um site criado para estudo de banco de dados e flask.</br>obrigado por testa-lo!</p>
+		<div class="info-divhead">
+			<p>olá {{user['nome']}}, bem vindo de volta.</br>Aqui você pode gerenciar suas informações cadastradas.</br>obrigado pela presença!</p>
 		</div>
 		<form id="userForm" action="/update" method="post">
 			<h2>Edit User Data</h2>
@@ -35,7 +35,7 @@
 				<button type="button" id="backButton" >voltar</button>
 			</div>
 		</form>
-		<div class="info-divcla">
+		<div class="info-divfoot">
 			<p>para alterar sua senha ou excluir sua conta entre nas <a href="" style="color:yellow;">configurações (não disponivel )</a> ou <a href="/logout" style="color: yellow;">sair</a> para desconectar.</p>
 		</div>
 	</main>
