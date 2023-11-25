@@ -54,8 +54,69 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
 });
-$('#userTable').DataTable({
-    "language": {
-        "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json"
-    }
+
+$(document).ready(function() {
+    $('#userTable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json"
+        }
+    });
+    
+    $('.editUser').on('click', function() {
+        var row = $(this).closest('tr');
+    
+        // Tornar as células editáveis clicáveis
+        row.find('.editable').attr('contenteditable', true);
+    
+        // Adicionar classe de destaque às células editáveis
+        row.find('.editable').addClass('editing');
+    
+        // Alterar o texto do link para 'Salvar'
+        $(this).text('Salvar');
+    
+        // Armazenar a referência à linha
+        var currentRow = row;
+    
+        // Remover o link de edição após clicar
+        $(this).off('click').on('click', function() {
+            // Tornar as células não editáveis
+            currentRow.find('.editable').attr('contenteditable', false);
+    
+            // Remover classe de destaque
+            currentRow.find('.editable').removeClass('editing');
+    
+            // Restaurar o texto original do link
+            $(this).text('Editar');
+    
+            // Criar um objeto para armazenar os dados editados
+            var editedData = {};
+    
+            // Obter o ID do usuário (substitua 'userId' pelo nome do atributo de dados que contém o ID)
+            var userId = currentRow.find('td:eq(3)').text();
+
+            // Percorrer cada célula editável na linha
+            currentRow.find('.editable').each(function() {
+                var columnName = $(this).data('field');  // Corrigido para 'data-field'
+                var cellValue = $(this).text();
+                editedData[columnName] = cellValue;
+            });
+    
+            // Enviar os dados editados para o servidor usando AJAX (exemplo)
+
+            $.ajax({
+                type: 'PUT',
+                url: 'http://127.0.0.1:5001/user/' + userId,  // Inclua o ID do usuário na URL
+                data: JSON.stringify(editedData),
+                contentType: 'application/json',
+                success: function(response) {
+                    // Lidar com a resposta do servidor, se necessário
+                    console.log('Dados atualizados com sucesso:', response);
+                },
+                error: function(error) {
+                    // Lidar com erros, se houver
+                    console.error('Erro ao atualizar dados:', error);
+                }
+            });
+        });
+    });
 });

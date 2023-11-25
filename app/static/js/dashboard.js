@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelButton = document.getElementById('cancelButton');
     const updateButton = document.getElementById('updateButton');
     const backButton = document.getElementById('backButton');
+    const visible = document.getElementById('togglePassword')
     const originalValues = {
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
@@ -40,5 +41,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     backButton.addEventListener('click', function() {
         history.back();
+    });
+
+    visible.addEventListener('click',function(){
+        var passwordInput = document.getElementById("password");
+        var togglePasswordIcon = document.getElementById("togglePassword");
+        
+        passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+        
+        togglePasswordIcon.innerHTML = passwordInput.type === "password" ? '<i class="fas fa-eye-slash"></i>' : '<i class="far fa-eye"></i>';
     });
 });
