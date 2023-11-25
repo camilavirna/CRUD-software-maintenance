@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>First Crud - Painel</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/admin.css')}}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link href="{{url_for('static',filename='DataTables/datatables.min.css')}}" rel="stylesheet">
+	<script src="{{url_for('static',filename='DataTables/datatables.min.js')}}"></script>
+</head>
+<body>
+	
+	<main>
+		<div class="info-divhead">
+			<p>olá admin, bem vindo de volta.</br>Aqui você pode gerenciar suas informações cadastradas.</br>obrigado pela presença!</p>
+		</div>
+		<!-- <form id="searchForm">
+			<input type="text" name="search_query" placeholder="Pesquisar por nome...">
+			<button type="submit">Pesquisar</button>
+	</form> -->
+	<div id="divtable">
+		<table id="userTable">
+			<thead>
+					<tr>
+							<th>Nome</th>
+							<th>Email</th>
+							<th>Telefone</th>
+							<th>ID</th>
+							<th>Ações</th>
+					</tr>
+			</thead>
+			<tbody>
+					{% for user in users %}
+							<tr>
+									<td>{{ user.nome }}</td>
+									<td>{{ user.email }}</td>
+									<td>{{ user.telefone }}</td>
+									<td>{{ user.id }}</td>
+									<td><a href="#" class="editUser">Editar</a></td>
+							</tr>
+					{% endfor %}
+			</tbody>
+		</table>	
+	</div>
+		<!-- <form id="userForm" action="/update" method="post">
+			<h2>Edit User Data</h2>
+			
+			<label for="email">Email:</label>
+			<input type="email" id="email" name="email" value="{{ users[0]['email'] }}" required>
+			
+			<label for="password">Password:</label>
+			<div class="password-container">
+        <input type="password" id="password" name="password" value="{{ users[0]['password'] }}" required>
+        <span id="togglePassword">
+            <i class="fas fa-eye-slash"></i>
+        </span>
+    	</div>
+			
+			<label for="nome">Nome:</label>
+			<input type="text" id="nome" name="nome" value="{{ users[0]['nome'] }}" required>
+			
+			<label for="telefone">Telefone:</label>
+			<input type="tel" id="telefone" name="telefone" value="{{ users[0]['telefone'] }}" required>
+			
+			<input type="hidden" name="id" value="{{ users[0]['id'] }}">
+			<button type="submit" id="updateButton" disabled>Update</button>
+			<div class="buttons">
+				<button type="button" id="cancelButton" disabled>Cancelar</button>
+				<button type="button" id="backButton" >voltar</button>
+			</div>
+		</form> -->
+		<div class="info-divfoot">
+			<p><a href="/logout" style="color: yellow;">sair</a> para desconectar.</p>
+		</div>
+	</main>
+	<script src="{{url_for('static',filename='js/admin.js')}}"></script>
+</body>
+</html>

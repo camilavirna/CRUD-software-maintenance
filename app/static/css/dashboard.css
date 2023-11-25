@@ -1,9 +1,17 @@
-.info-divcla p {
+.info-divhead p {
 	font-size: 18px;
 	text-align: center;
 	font-family: arial;
 	color: #fff;
-	margin-top: 25%;
+	margin-bottom: 10%;
+}
+
+.info-divfoot p {
+	font-size: 18px;
+	text-align: center;
+	font-family: arial;
+	color: #fff;
+	margin-top: 10%;
 }
 
 a{
@@ -19,7 +27,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	min-height: 100vh;
 }
 
 form {

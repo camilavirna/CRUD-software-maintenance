@@ -54,6 +54,23 @@ class App:
                 print(e)
 
                 return abort(400)
+        
+        @self.app.route("/admin", methods=["GET"])
+        def admin():
+            try:
+                response = requests.get(self.url_base + f"user")
+                if response.status_code != 200:
+                    response = make_response(redirect("/login?erro=4"))
+                    return response
+                else:
+                    response = response.json()
+                    users = response["user"]
+                    return render_template("admin.html",users=users)
+
+            except Exception as e:
+                print(e)
+
+                return abort(400)
 
         @self.app.route("/",methods=["GET","POST"])
         def redirectloginpage():
@@ -69,8 +86,10 @@ class App:
             passw = request.args["pswd"]
             mensagem_de_validacao, id_session = self.loginverify(email, passw)
             if mensagem_de_validacao == "sucesso":
-                response = make_response(redirect(f"/dashboard/{id_session}"))
-                return response
+                if email == "admin@gmail.com":
+                    return make_response(redirect(f"/admin"))
+                return make_response(redirect(f"/dashboard/{id_session}"))
+                 
 
             elif mensagem_de_validacao == "não cadastrado":
                 return redirect("/login?erro=0")
