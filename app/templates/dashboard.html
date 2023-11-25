@@ -5,7 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>First Crud - Painel</title>
 	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/dashboard.css')}}">
-	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 <body>
 	
@@ -13,14 +14,23 @@
 		<div class="info-divhead">
 			<p>olá {{user['nome']}}, bem vindo de volta.</br>Aqui você pode gerenciar suas informações cadastradas.</br>obrigado pela presença!</p>
 		</div>
-		<form id="userForm" action="/update" method="post">
+	<!-- <form id="searchForm">
+		<input type="text" name="search_query" placeholder="Pesquisar por nome...">
+		<button type="submit">Pesquisar</button>
+	</form> -->
+	<form id="userForm" action="/update" method="post">
 			<h2>Edit User Data</h2>
 			
 			<label for="email">Email:</label>
 			<input type="email" id="email" name="email" value="{{ user['email'] }}" required>
 			
 			<label for="password">Password:</label>
-			<input type="password" id="password" name="password" value="{{ user['password'] }}" required>
+			<div class="password-container">
+				<input type="password" id="password" name="password" value="{{ user['password'] }}" required>
+				<span id="togglePassword">
+						<i class="fas fa-eye-slash"></i>
+				</span>
+			</div>
 			
 			<label for="nome">Nome:</label>
 			<input type="text" id="nome" name="nome" value="{{ user['nome'] }}" required>
@@ -36,7 +46,7 @@
 			</div>
 		</form>
 		<div class="info-divfoot">
-			<p>para alterar sua senha ou excluir sua conta entre nas <a href="" style="color:yellow;">configurações (não disponivel )</a> ou <a href="/logout" style="color: yellow;">sair</a> para desconectar.</p>
+			<p><a href="/logout" style="color: yellow;">sair</a> para desconectar.</p>
 		</div>
 	</main>
 	<script src="{{url_for('static',filename='js/dashboard.js')}}"></script>

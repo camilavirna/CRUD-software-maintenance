@@ -6,12 +6,13 @@ from flask import request
 from server import create_server
 from server.models import User
 from server.utils import generate_response
+from flask_cors import CORS
 
 from . import db
 
 logging.basicConfig(level=logging.INFO)
 server = create_server(os.getenv("FLASK_CONFIG"))
-
+CORS(server)
 
 @server.route("/user", methods=["GET"])
 def get_users():

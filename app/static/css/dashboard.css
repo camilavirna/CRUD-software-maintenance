@@ -93,3 +93,19 @@ button[disabled] {
   justify-content: space-between;
 	margin-top: 5px;
 }
+
+.password-container {
+	position: relative;
+}
+
+#togglePassword {
+	position: absolute;
+	right: 10px;
+	top: 35%;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+
+#searchForm{
+	margin-bottom: 5%;
+}
