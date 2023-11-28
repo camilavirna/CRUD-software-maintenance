@@ -2,10 +2,7 @@ import os
 
 import requests
 from flask import Flask, abort, make_response, redirect, render_template, request
-from urllib.parse import urlparse
 
-
-DOMAINS_ALLOWLIST = ['trusted1.example.com', 'trusted2.example.com']
 
 
 class System:
@@ -16,7 +13,8 @@ class System:
         self.url_base = url_base
 
     def loginverify(self, email, senha):
-        response = requests.get(self.url_base + f"user/email={email}")
+        params = {'user/email': email}
+        response = requests.get(self.url_base, params=params)
         if response.status_code != 200:
             return "não cadastrado", None
         else:
@@ -85,21 +83,21 @@ class System:
             return render_template("login.html")
 
         @self.system.route("/login/validate/", methods=["GET"])
-        def validatelogin():
-            email = request.args["email"].lower()
-            passw = request.args["pswd"]
-            mensagem_de_validacao, id_session = self.loginverify(email, passw)
-            if mensagem_de_validacao == "sucesso":
-                if email == "admin@gmail.com":
-                    return make_response(redirect("/admin"))
-                return make_response(redirect(f"/dashboard/{id_session}"))
+        def validatelogin(self):
+                email = request.args.get("email", "").lower()
+                passw = request.args.get("pswd", "")
+        
+        mensagem_de_validacao, id_session = self.loginverify(email, passw)
+
+        if mensagem_de_validacao == "sucesso":
+            if email == "admin@gmail.com":
+                return make_response(redirect(url_for("admin_route")))
+            return make_response(redirect(url_for("dashboard_route", id_session=id_session)))
                  
-
-            elif mensagem_de_validacao == "não cadastrado":
-                return redirect("/login?erro=0")
-
-            else:
-                return redirect("/login?erro=1")
+        elif mensagem_de_validacao == "não cadastrado":
+            return redirect(url_for("login_route", erro=0))
+        else:
+            return redirect(url_for("login_route", erro=1))
 
         @self.system.route("/signup/validate")
         def signup():
