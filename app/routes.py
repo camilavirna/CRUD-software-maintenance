@@ -4,11 +4,11 @@ import requests
 from flask import Flask, abort, make_response, redirect, render_template, request
 
 
-class App:
+class System:
     def __init__(self, url_base):
-        self.app = Flask(__name__, static_url_path="/")
-        self.app.template_folder = "templates/"
-        self.app.static_folder = "static/"
+        self.system = Flask(__name__, static_url_path="/")
+        self.system.template_folder = "templates/"
+        self.system.static_folder = "static/"
         self.url_base = url_base
 
     def loginverify(self, email, senha):
@@ -58,7 +58,7 @@ class App:
         @self.app.route("/admin", methods=["GET"])
         def admin():
             try:
-                response = requests.get(self.url_base + f"user")
+                response = requests.get(self.url_base + "user")
                 if response.status_code != 200:
                     response = make_response(redirect("/login?erro=4"))
                     return response
@@ -87,7 +87,7 @@ class App:
             mensagem_de_validacao, id_session = self.loginverify(email, passw)
             if mensagem_de_validacao == "sucesso":
                 if email == "admin@gmail.com":
-                    return make_response(redirect(f"/admin"))
+                    return make_response(redirect("/admin"))
                 return make_response(redirect(f"/dashboard/{id_session}"))
                  
 

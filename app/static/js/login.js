@@ -5,7 +5,7 @@ document.querySelector("body > div.main > div.login > form > label").click()
 
 if(erro == '0'){
 
-	erromsg = 'usuario não registrado no sistema.'
+	const erromsg = 'usuario não registrado no sistema.'
 	document.querySelector('.erro').textContent = erromsg
 	document.querySelector("label").click()
 } 
