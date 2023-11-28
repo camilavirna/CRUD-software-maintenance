@@ -12,7 +12,7 @@
 .info-divfoot p {
 	font-size: 18px;
 	text-align: center;
-	font-family: arial;
+	font-family: arial,sans-serif;
 	color: #fff;
 	margin-top: 10%;
 }
