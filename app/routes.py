@@ -40,79 +40,81 @@ class System:
             return "existe"
             
     def start(self):
-        @self.system.route("/dashboard/<id>", methods=["GET"])
-        def dashboard(id):
-            try:
-                response = requests.get(self.url_base + f"user/id={id}")
-                if response.status_code != 200:
-                    response = make_response(redirect("/login?erro=4"))
-                    return response
-                else:
-                    response = response.json()
-                    user = response["user"]
-                    return render_template("dashboard.html",user=user)
+        self.setup_routes()
 
-            except Exception as e:
-                print(e)
+    def setup_routes(self):
+        self.aplication.route("/dashboard/<id>", methods=["GET"])(self.dashboard_route)
+        self.aplication.route("/admin", methods=["GET"])(self.admin_route)
+        self.aplication.route("/", methods=["GET", "POST"])(self.redirect_login_page_route)
+        self.aplication.route("/login")(self.login_route)
+        self.aplication.route("/login/validate/", methods=["GET"])(self.validate_login_route)
+        self.aplication.route("/signup/validate")(self.signup_route)
 
-                return abort(400)
+    def dashboard_route(self, id):
+        try:
+            response = self.get_user_data_by_id(id)
+            
+            if response.status_code != 200:
+                return make_response(redirect("/login?erro=4"))
+                
+            user = response.json()["user"]
+            return render_template("dashboard.html", user=user)
         
-        @self.system.route("/admin", methods=["GET"])
-        def admin():
-            try:
-                response = requests.get(self.url_base + "user")
-                if response.status_code != 200:
-                    response = make_response(redirect("/login?erro=4"))
-                    return response
-                else:
-                    response = response.json()
-                    users = response["user"]
-                    return render_template("admin.html",users=users)
+        except Exception as e:
+            return self.handle_error(e)
 
-            except Exception as e:
-                print(e)
-
-                return abort(400)
-
-        @self.system.route("/",methods=["GET","POST"])
-        def redirectloginpage():
-            return redirect("/login")
-
-        @self.system.route("/login")
-        def login():
-            return render_template("login.html")
-
-        @self.system.route("/login/validate/", methods=["GET"])
-        def validatelogin(self):
-                email = request.args.get("email", "").lower()
-                passw = request.args.get("pswd", "")
+    def admin_route(self):
+        try:
+            response = requests.get(self.url_base + "user")
+            
+            if response.status_code != 200:
+                return make_response(redirect("/login?erro=4"))
+                
+            users = response.json()["user"]
+            return render_template("admin.html", users=users)
         
+        except Exception as e:
+            return self.handle_error(e)
+
+    def redirect_login_page_route(self):
+        return redirect("/login")
+
+    def login_route(self):
+        return render_template("login.html")
+
+    def validate_login_route(self):
+        email, passw = request.args.get("email", "").lower(), request.args.get("pswd", "")
         mensagem_de_validacao, id_session = self.loginverify(email, passw)
 
         if mensagem_de_validacao == "sucesso":
-            if email == "admin@gmail.com":
-                return make_response(redirect(url_for("admin_route")))
-            return make_response(redirect(url_for("dashboard_route", id_session=id_session)))
-                 
+            return self.handle_successful_login(email, id_session)
         elif mensagem_de_validacao == "não cadastrado":
-            return redirect(url_for("login_route", erro=0))
+            return redirect("/login?erro=0")
         else:
-            return redirect(url_for("login_route", erro=1))
+            return redirect("/login?erro=1")
 
-        @self.system.route("/signup/validate")
-        def signup():
-            user = request.args["user"]
-            email = request.args["email"].lower()
-            passw = request.args["pswd"]
+    def signup_route(self):
+        user, email, passw = request.args["user"], request.args["email"].lower(), request.args["pswd"]
+        mensagem_de_validacao = self.register(user, email, passw)
 
-            mensagem_de_validacao = self.register(user, email, passw)
+        if mensagem_de_validacao == "sucesso":
+            return redirect("/login?erro=3")
+        elif mensagem_de_validacao == "existe":
+            return redirect("/login?erro=2")
 
-            if mensagem_de_validacao == "sucesso":
-                return redirect("/login?erro=3")
+    def handle_successful_login(self, email, id_session):
+        if email == "admin@gmail.com":
+            return make_response(redirect("/admin"))
+        return make_response(redirect(f"/dashboard/{id_session}"))
 
-            elif mensagem_de_validacao == "existe":
-                return redirect("/login?erro=2")
+    def get_user_data_by_id(self, user_id):
+        return requests.get(self.url_base + f"user/id={user_id}")
 
+    def handle_error(self, error):
+        # Log the error or handle it as appropriate for your application
+        print(error)
+        return abort(400)
+    
         @self.system.route("/logout")
         def logout():
             return make_response(redirect("/login"))        
