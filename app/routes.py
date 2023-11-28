@@ -2,6 +2,10 @@ import os
 
 import requests
 from flask import Flask, abort, make_response, redirect, render_template, request
+from urllib.parse import urlparse
+
+
+DOMAINS_ALLOWLIST = ['trusted1.example.com', 'trusted2.example.com']
 
 
 class System:
@@ -38,7 +42,7 @@ class System:
             return "existe"
             
     def start(self):
-        @self.app.route("/dashboard/<id>", methods=["GET"])
+        @self.system.route("/dashboard/<id>", methods=["GET"])
         def dashboard(id):
             try:
                 response = requests.get(self.url_base + f"user/id={id}")
@@ -55,7 +59,7 @@ class System:
 
                 return abort(400)
         
-        @self.app.route("/admin", methods=["GET"])
+        @self.system.route("/admin", methods=["GET"])
         def admin():
             try:
                 response = requests.get(self.url_base + "user")
@@ -72,15 +76,15 @@ class System:
 
                 return abort(400)
 
-        @self.app.route("/",methods=["GET","POST"])
+        @self.system.route("/",methods=["GET","POST"])
         def redirectloginpage():
             return redirect("/login")
 
-        @self.app.route("/login")
+        @self.system.route("/login")
         def login():
             return render_template("login.html")
 
-        @self.app.route("/login/validate/", methods=["GET"])
+        @self.system.route("/login/validate/", methods=["GET"])
         def validatelogin():
             email = request.args["email"].lower()
             passw = request.args["pswd"]
@@ -97,7 +101,7 @@ class System:
             else:
                 return redirect("/login?erro=1")
 
-        @self.app.route("/signup/validate")
+        @self.system.route("/signup/validate")
         def signup():
             user = request.args["user"]
             email = request.args["email"].lower()
@@ -111,11 +115,11 @@ class System:
             elif mensagem_de_validacao == "existe":
                 return redirect("/login?erro=2")
 
-        @self.app.route("/logout")
+        @self.system.route("/logout")
         def logout():
             return make_response(redirect("/login"))        
         
-        @self.app.route("/update",methods=["GET","POST"])
+        @self.system.route("/update",methods=["GET","POST"])
         def update():
             body = {
                 "email": request.form.get('email'),
@@ -127,6 +131,6 @@ class System:
             requests.put(self.url_base + f"user/{body['id']}", json=body)
             return redirect(f"/dashboard/{body['id']}")
         
-        self.app.run(
+        self.system.run(
             debug=True, port=int(os.environ.get("PORT", 5000)), host="0.0.0.0"
         )
