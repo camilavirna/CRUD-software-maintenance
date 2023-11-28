@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     visible.addEventListener('click',function(){
-        var passwordInput = document.getElementById("password");
-        var togglePasswordIcon = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+        const togglePasswordIcon = document.getElementById("togglePassword");
         
         passwordInput.type = passwordInput.type === "password" ? "text" : "password";
         

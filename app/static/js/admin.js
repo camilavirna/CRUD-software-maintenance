@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     visible.addEventListener('click',function(){
-        var passwordInput = document.getElementById("password");
-        var togglePasswordIcon = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+        const togglePasswordIcon = document.getElementById("togglePassword");
         
         passwordInput.type = passwordInput.type === "password" ? "text" : "password";
         
@@ -63,7 +63,7 @@ $(document).ready(function() {
     });
     
     $('.editUser').on('click', function() {
-        var row = $(this).closest('tr');
+        const row = $(this).closest('tr');
     
         // Tornar as células editáveis clicáveis
         row.find('.editable').attr('contenteditable', true);
@@ -75,7 +75,7 @@ $(document).ready(function() {
         $(this).text('Salvar');
     
         // Armazenar a referência à linha
-        var currentRow = row;
+        const currentRow = row;
     
         // Remover o link de edição após clicar
         $(this).off('click').on('click', function() {
@@ -89,15 +89,15 @@ $(document).ready(function() {
             $(this).text('Editar');
     
             // Criar um objeto para armazenar os dados editados
-            var editedData = {};
+           const editedData = {};
     
             // Obter o ID do usuário (substitua 'userId' pelo nome do atributo de dados que contém o ID)
-            var userId = currentRow.find('td:eq(3)').text();
+            const userId = currentRow.find('td:eq(3)').text();
 
             // Percorrer cada célula editável na linha
             currentRow.find('.editable').each(function() {
-                var columnName = $(this).data('field');  // Corrigido para 'data-field'
-                var cellValue = $(this).text();
+                const columnName = $(this).data('field');  // Corrigido para 'data-field'
+                const cellValue = $(this).text();
                 editedData[columnName] = cellValue;
             });
     
